@@ -15,8 +15,10 @@ serialPort.on("open", function () {
     try {
       var buffer = new Buffer(input, 'utf8');
       var data = JSON.parse(buffer);
-      console.log("Received:" + data);
-      sendAlert(data.isAlert);
+      console.log("Received:" + buffer);
+      if (data.type == "alert") {
+        sendAlert(data.isAlert);
+      }
     } catch(e) {}
   });
 });
@@ -35,11 +37,6 @@ function sendColor(red, blue, green) {
 var wsServer = ws.listen(8888, function () {
   console.log('\033[96m WebSocket server running\033[39m');
 });
-// wsServer.on('connection', function(socket) {
-//   socket.on('message', function(data) {
-//     // メッセージ受信
-//   });
-// });
 
 /**
  * 監視状況を送信
@@ -60,7 +57,7 @@ app.get('/api/v1/color', function(req, res){
   var green = req.query.green;
   var blue  = req.query.blue;
   sendColor(red, green, blue);
-  res.send('R:' + red + 'G:' + green + 'B:' + blue);
+  res.send('ok');
 });
 app.get('/api/v1/alert/on', function(req, res){
   sendAlert(true);

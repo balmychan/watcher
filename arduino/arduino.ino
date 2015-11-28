@@ -12,9 +12,9 @@ bool isAlert = false;
 int ledCounter = 0;
 bool isShow = false;
 // 保存した色
-int currentRed   = 128;
-int currentGreen = 128;
-int currentBlue  = 128;
+int currentRed   = 255;
+int currentGreen = 0;
+int currentBlue  = 0;
 
 /**
  * 初期化
@@ -70,14 +70,19 @@ void loop() {
 }
 
 /**
+ * シリアルポートでメッセージを送信する
+ */
+void sendSerialMessage(char* message) {
+  Serial.println(message);
+}
+
+/**
  * アラートを送信する
  */
 void sendAlert(bool isAlert) {
-  if (isAlert) {
-    Serial.println("{ \"isAlert\": true }");
-  } else {
-    Serial.println("{ \"isAlert\": false }");
-  }
+  char sendMessage[100];
+  sprintf(sendMessage, "{ \"type\": \"alert\", \"isAlert\": %s }", isAlert ? "true" : "false");
+  sendSerialMessage(sendMessage);
 }
 
 /**
@@ -107,19 +112,30 @@ void updateLED(bool show, int red, int green, int blue) {
 /**
  * メッセージ受信処理
  */
-void receivedMessage(char mode, char message[30]) {
+void receivedMessage(char mode, char* message) {
   if (mode == 'C') {
     receiveColor(message);
+  } else if (mode == 'G') {
+    receiveGetColor(message);
   }
 }
 
 /**
  * カラーメッセージを受信
  */
-void receiveColor(char message[30]) {
+void receiveColor(char* message) {
   long color = atol(message);
   int red   = (color >> 16) & 255;
   int green = (color >>  8) & 255;
   int blue  = (color >>  0) & 255;
   setColor(red, green, blue);
+}
+
+/**
+ * 現在のカラーを返すメッセージを受信
+ */
+void receiveGetColor(char* message) {
+  char sendMessage[100];
+  sprintf(sendMessage, "{ \"type\": \"color\", \"red\": %d, \"green\": %d, \"blue\": %d }", currentRed, currentGreen, currentBlue);
+  sendSerialMessage(sendMessage);
 }

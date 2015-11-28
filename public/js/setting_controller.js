@@ -1,9 +1,9 @@
 angular.module('app').controller("SettingController", ['$scope', '$http', function($scope, $http) {
   var isSending = false;
   $scope.color = {
-    red:   128,
-    green: 128,
-    blue:  128
+    red:   255,
+    green: 0,
+    blue:  0
   };
   $scope.$watch("color", function(color) {
     if (angular.isUndefined(color)) return;

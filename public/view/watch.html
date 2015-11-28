@@ -3,7 +3,7 @@
 </md-switch>
 <div layout="column" flex-offset="5" ng-if="state.isWatching">
   <div ng-switch="">
-    <span ng-if="state.isAlert == false">監視中</span>
+    <img ng-if="state.isAlert == false" src="/img/watching.png" width="450" height="325">
     <img ng-if="state.isAlert == true" src="/img/watcher.png" width="450" height="325">
   </div>
 </div>
