@@ -18,6 +18,7 @@
   "dependencies": {
     "jquery": "~2.0.1",
     "angular-material": "~0.11.4",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "rx-angular": "angular-rx#~1.0.4"
   }
 }

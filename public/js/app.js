@@ -1,6 +1,7 @@
 var app = angular.module("app", [
   'ngMaterial',
-  'ui.router'
+  'ui.router',
+  'rx'
 ]);
 
 app.config(['$stateProvider', function($stateProvider) {
