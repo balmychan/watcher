@@ -1,0 +1,23 @@
+{
+  "name": "watcher",
+  "description": "",
+  "main": "app/app.js",
+  "authors": [
+    "balmychan <ayumi.goto.0212@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.1",
+    "angular-material": "~0.11.4",
+    "angular-ui-router": "~0.2.15"
+  }
+}

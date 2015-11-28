@@ -1,0 +1,166 @@
+#define ALERT_LIMIT_VALUE 300
+// Pin設定
+int redPin   = 3;
+int greenPin = 5;
+int bluePin  = 6;
+int psdPin   = 1;
+// ステータス
+char mode = 'N';
+char message[30];
+int messageNextIndex = 0;
+bool isAlert = false;
+int ledCounter = 0;
+bool isShow = false;
+// 保存した色
+int currentRed   = 128;
+int currentGreen = 128;
+int currentBlue  = 128;
+// 関数宣言
+void receivedMessage(char message[30]);
+void receiveColor(char message[30]);
+void setColor(int red, int green, int blue);
+
+/**
+ * 初期化
+ */
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  Serial.begin(9600);
+}
+
+/**
+ * メインループ処理
+ */
+void loop() {
+  // メッセージ受信ループ
+  while(Serial.available()) {
+    char ch = Serial.read();
+    // モード開始していなければ、開始する
+    if (mode == 'N') {
+      mode = ch;
+    }
+    // 終端記号でなければ、メッセージを蓄積する
+    else if (ch != '$') {
+      message[messageNextIndex] = ch;
+      messageNextIndex++;
+    }
+    // 終端記号なら、終了
+    else if (ch == '$') {
+      message[messageNextIndex] = '\0'; // 末尾にNULLを入れる
+      receivedMessage(mode, message);
+      mode = 'N';
+      messageNextIndex = 0;
+    }
+  }
+  // 監視ループ
+  int value = analogRead(psdPin);
+  if (isAlert == false && ALERT_LIMIT_VALUE < value) {
+    isAlert = true;
+    sendAlert(isAlert);
+  }
+  else if (isAlert == true && value < ALERT_LIMIT_VALUE) {
+    isAlert = false;
+    sendAlert(isAlert);
+  }
+  // 点滅用
+  if (500 < ledCounter++) {
+    isShow = !isShow;
+    ledCounter = 0;
+  }
+  updateLED(isAlert && isShow, currentRed, currentGreen, currentBlue);
+}
+
+/**
+ * アラートを送信する
+ */
+void sendAlert(bool isAlert) {
+  if (isAlert) {
+    Serial.println("{ \"isAlert\": true }");
+  } else {
+    Serial.println("{ \"isAlert\": false }");
+  }
+}
+
+/**
+ * 色を指定のRGB値で更新する
+ */
+void setColor(int red, int green, int blue) {
+  currentRed   = red;
+  currentGreen = green;
+  currentBlue  = blue;
+}
+
+/**
+ * LEDを更新
+ */
+void updateLED(bool show, int red, int green, int blue) {
+  if (show) {
+    analogWrite(redPin,   red);
+    analogWrite(greenPin, green);
+    analogWrite(bluePin,  blue);
+  } else {
+    analogWrite(redPin,   0);
+    analogWrite(greenPin, 0);
+    analogWrite(bluePin,  0);
+  }
+}
+
+/**
+ * メッセージ受信処理
+ */
+void receivedMessage(char mode, char message[30]) {
+  if (mode == 'C') {
+    receiveColor(message);
+  }
+}
+
+/**
+ * カラーメッセージを受信
+ */
+void receiveColor(char message[30]) {
+  long color = atol(message);
+  int red   = (color >> 16) & 255;
+  int green = (color >>  8) & 255;
+  int blue  = (color >>  0) & 255;
+  setColor(red, green, blue);
+}
+
+//  analogWrite(redPin, 1);
+//  analogWrite(greenPin, 0);
+//  analogWrite(bluePin, 0);
+//  int val = analogRead(psdPin);
+
+//  delay(100); 
+  
+//  while(Serial.available()) {
+//    char ch = Serial.read();
+//    if (ch == 'r') {
+//      digitalWrite(redPin, HIGH);
+//    }
+//    if (ch == 'R') {
+//      digitalWrite(redPin, LOW);
+//    }
+//    if (ch == 'g') {
+//      digitalWrite(greenPin, HIGH);
+//    }
+//    if (ch == 'G') {
+//      digitalWrite(greenPin, LOW);
+//    }
+//    if (ch == 'b') {
+//      digitalWrite(bluePin, HIGH);
+//    }
+//    if (ch == 'B') {
+//      digitalWrite(bluePin, LOW);
+//    }
+//  }
+//  if (300 < val) {
+//    digitalWrite(redPin, HIGH);
+//  } else {
+//    digitalWrite(redPin, LOW);
+//  }
+//  digitalWrite(redPin, HIGH);
+//  digitalWrite(greenPin, HIGH);
+//  digitalWrite(bluePin, HIGH);
+//}
