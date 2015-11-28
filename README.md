@@ -3,7 +3,7 @@
 
 |ファイル名|説明|
 |--- |--- |
-|app.js|nodeのメインファイル（ここでWebサーバーやWebSocketサーバー、Arduinoとのシリアル通信を実装|
+|app.js|nodeのメインファイル（ここでWebサーバーやWebSocketサーバー、Arduinoとのシリアル通信を実装）|
 |public|Webサーバーが返すルートディレクトリ|
 |arduino/arduino.ino|Arduinoプログラム|
 
