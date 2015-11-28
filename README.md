@@ -7,6 +7,10 @@
 |public|Webサーバーが返すルートディレクトリ|
 |arduino/arduino.ino|Arduinoプログラム|
 
+## 概要図
+
+![wather概要図](https://raw.githubusercontent.com/balmychan/watcher/master/public/img/about_watcher.png)
+
 ## セットアップ
 
 ```
