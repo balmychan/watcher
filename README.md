@@ -16,3 +16,14 @@ $ npm install
 $ bower install
 $ node app.js
 ```
+
+app.jsに書かれているシリアルポートの設定（/dev/tty.****の部分）は各自変更すること。もしMacを使っているなら、下記コマンドで確認できる
+
+```
+$ ls -1 /dev/tty.*
+/dev/tty.BeaatsStduioWireless-SPP
+/dev/tty.Bluetooth-Incoming-Port
+/dev/tty.usbmodem14111
+```
+
+Arduinoと接続されているUSBを確認し、各自設定する
