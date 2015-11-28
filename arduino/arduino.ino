@@ -15,18 +15,14 @@ bool isShow = false;
 int currentRed   = 128;
 int currentGreen = 128;
 int currentBlue  = 128;
-// 関数宣言
-void receivedMessage(char message[30]);
-void receiveColor(char message[30]);
-void setColor(int red, int green, int blue);
 
 /**
  * 初期化
  */
 void setup() {
-  pinMode(redPin, OUTPUT);
+  pinMode(redPin,   OUTPUT);
   pinMode(greenPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
+  pinMode(bluePin,  OUTPUT);
   Serial.begin(9600);
 }
 
@@ -69,6 +65,7 @@ void loop() {
     isShow = !isShow;
     ledCounter = 0;
   }
+  // LEDを更新
   updateLED(isAlert && isShow, currentRed, currentGreen, currentBlue);
 }
 
@@ -93,7 +90,7 @@ void setColor(int red, int green, int blue) {
 }
 
 /**
- * LEDを更新
+ * LEDの点灯を更新
  */
 void updateLED(bool show, int red, int green, int blue) {
   if (show) {
@@ -126,41 +123,3 @@ void receiveColor(char message[30]) {
   int blue  = (color >>  0) & 255;
   setColor(red, green, blue);
 }
-
-//  analogWrite(redPin, 1);
-//  analogWrite(greenPin, 0);
-//  analogWrite(bluePin, 0);
-//  int val = analogRead(psdPin);
-
-//  delay(100); 
-  
-//  while(Serial.available()) {
-//    char ch = Serial.read();
-//    if (ch == 'r') {
-//      digitalWrite(redPin, HIGH);
-//    }
-//    if (ch == 'R') {
-//      digitalWrite(redPin, LOW);
-//    }
-//    if (ch == 'g') {
-//      digitalWrite(greenPin, HIGH);
-//    }
-//    if (ch == 'G') {
-//      digitalWrite(greenPin, LOW);
-//    }
-//    if (ch == 'b') {
-//      digitalWrite(bluePin, HIGH);
-//    }
-//    if (ch == 'B') {
-//      digitalWrite(bluePin, LOW);
-//    }
-//  }
-//  if (300 < val) {
-//    digitalWrite(redPin, HIGH);
-//  } else {
-//    digitalWrite(redPin, LOW);
-//  }
-//  digitalWrite(redPin, HIGH);
-//  digitalWrite(greenPin, HIGH);
-//  digitalWrite(bluePin, HIGH);
-//}
