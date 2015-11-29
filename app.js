@@ -68,8 +68,9 @@ function tweetAlert() {
   };
   request.post(options, function(error, response, body){
     // noop
-    console.log(error);
-    console.log(response);
+    if (error) {
+      console.log(error);
+    }
   });
 }
 
