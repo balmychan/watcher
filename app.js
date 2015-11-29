@@ -1,7 +1,14 @@
+// Import
 var sys        = require('sys');
 var serialport = require('serialport');
 var express    = require('express');
 var ws         = require('websocket.io');
+var moment     = require('moment');
+
+// State
+var alertHistories = [
+  // { 'date': 'xxxx-xx-xx xx:xx:xx', 'isAlert': true|false }
+];
 
 /////////////////////////
 // Serial port
@@ -17,6 +24,10 @@ serialPort.on("open", function () {
       var data = JSON.parse(buffer);
       console.log("Received:" + buffer);
       if (data.type == "alert") {
+        alertHistories.unshift({
+          'date': moment().format('YYYY/MM/DD HH:mm:ss'),
+          'isAlert': data.isAlert
+        });
         sendAlert(data.isAlert);
       }
     } catch(e) {}
@@ -52,12 +63,15 @@ function sendAlert(isAlert) {
 /////////////////////////
 var app = express();
 app.use(express.static('public'));
-app.get('/api/v1/color', function(req, res){
+app.get('/api/v1/color', function(req, res) {
   var red   = req.query.red;
   var green = req.query.green;
   var blue  = req.query.blue;
   sendColor(red, green, blue);
   res.send('ok');
+});
+app.get('/api/v1/alert_histories', function(req, res) {
+  res.send(JSON.stringify(alertHistories.slice(0, 19)));
 });
 app.get('/api/v1/alert/on', function(req, res){
   sendAlert(true);

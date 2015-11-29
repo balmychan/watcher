@@ -2,8 +2,21 @@
   監視を開始
 </md-switch>
 <div layout="column" flex-offset="5" ng-if="state.isWatching">
-  <div ng-switch="">
+  <div>
     <img ng-if="state.isAlert == false" src="/img/watching.png" width="450" height="325">
     <img ng-if="state.isAlert == true" src="/img/watcher.png" width="450" height="325">
   </div>
+
+  <md-content>
+    <md-list>
+      <md-subheader class="md-no-sticky">監視ヒストリー</md-subheader>
+      <md-list-item class="md-3-line" ng-repeat="history in histories">
+        <md-divider ></md-divider>
+        <div class="md-list-item-text" layout="column">
+          <h3>{{ history.date }}</h3>
+          <h4>{{ history.isAlert ? '侵入者あり' : '侵入者なし' }}</h4>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
 </div>
