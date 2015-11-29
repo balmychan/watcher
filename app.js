@@ -4,6 +4,7 @@ var serialport = require('serialport');
 var express    = require('express');
 var ws         = require('websocket.io');
 var moment     = require('moment');
+var request    = require('request');
 
 // State
 var alertHistories = [
@@ -55,6 +56,20 @@ var wsServer = ws.listen(8888, function () {
 function sendAlert(isAlert) {
   wsServer.clients.forEach(function(client) {
     client.send(JSON.stringify({ 'isAlert' : isAlert }));
+  });
+  tweetAlert();
+}
+
+function tweetAlert() {
+  var options = {
+    uri: 'https://zapier.com/hooks/catch/3gcq9h/',
+    form: { "test": "test", "date": moment().format('YYYY/MM/DD HH:mm:ss') },
+    json: true
+  };
+  request.post(options, function(error, response, body){
+    // noop
+    console.log(error);
+    console.log(response);
   });
 }
 
