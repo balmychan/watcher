@@ -38,7 +38,7 @@ serialPort.on("open", function () {
 /**
  * Send color code to Arduino
  */
-function sendColor(red, blue, green) {
+function sendColor(red, green, blue) {
   var message = (red << 16) ^ (green << 8) ^ (blue << 0);
   serialPort.write("C" + message + "$");
 }
