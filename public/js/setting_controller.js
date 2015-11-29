@@ -7,7 +7,6 @@ angular.module('app').controller("SettingController", ['$scope', '$http', 'rx', 
   };
 
   observeOnScope($scope, 'color', true)
-    .throttle(100)
     .map(function(change) { return change.newValue })
     .filter(function(color) { console.log(color); return !angular.isUndefined(color); })
     .filter(function(color) { console.log(color); return !isSending })
