@@ -9,7 +9,7 @@
 
 ## 概要図
 
-![wather概要図](https://raw.githubusercontent.com/balmychan/watcher/master/public/img/about_watcher.png)
+![wather概要図](https://raw.githubusercontent.com/balmychan/watcher/master/public/img/about_watcher.v2.png)
 
 ## セットアップ
 
